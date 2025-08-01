@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayudu Rajaharsha | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic styles and theme variables */
+        :root {
+            --bg-light: #f0f0f0;
+            --text-light: #1a1a1a;
+            --accent-light: #ef4444; /* Light Red */
+            --card-light: #ffffff;
+
+            --bg-dark: #1a1a1a;
+            --text-dark: #f0f0f0;
+            --accent-dark: #ef4444; /* Light Red */
+            --card-dark: #2d2d2d;
+        }
+
+        /* Styles for the animated background canvas */
+        #animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Main body styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.5s ease, color 0.5s ease;
+            scroll-behavior: smooth;
+            cursor: none; /* Hide the default cursor */
+        }
+
+        /* Custom Cursor Styling */
+        .custom-cursor {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            background-color: rgba(239, 68, 68, 0.5); /* Semi-transparent red */
+            border: 2px solid;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Cursor border colors based on theme */
+        .light-mode .custom-cursor {
+            border-color: var(--text-light); /* Black border */
+        }
+        .dark-mode .custom-cursor {
+            border-color: var(--text-dark); /* White border */
+        }
+
+        /* Hide custom cursor on touch devices */
+        @media (pointer: coarse) {
+            .custom-cursor {
+                display: none;
+            }
+            body {
+                cursor: auto;
+            }
+        }
+
+
+        /* Light mode styles */
+        body.light-mode {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        
+        .card {
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .light-mode .card {
+            background-color: var(--card-light);
+            border-color: #e5e7eb;
+        }
+
+        .dark-mode .card {
+            background-color: var(--card-dark);
+            border-color: #4b5563;
+        }
+        
+        .accent-color {
+            color: var(--accent-light);
+        }
+
+        /* Theme toggle button styling */
+        #theme-toggle-btn .moon-icon {
+            display: none;
+        }
+        #theme-toggle-btn .sun-icon {
+            display: block;
+        }
+
+        .dark-mode #theme-toggle-btn .moon-icon {
+            display: block;
+        }
+        .dark-mode #theme-toggle-btn .sun-icon {
+            display: none;
+        }
+
+        /* Text Animation Styles */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Interactive Letter Styling */
+        .interactive-letter {
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .interactive-letter:hover {
+            transform: scale(1.2) translateY(-5px);
+            color: var(--accent-light);
+        }
+    </style>
+</head>
+<body class="light-mode">
+
+    <div class="custom-cursor"></div>
+    <canvas id="animated-bg"></canvas>
+
+    <!-- Header -->
+    <header class="bg-white/80 dark:bg-black/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-10 shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo on the left -->
+            <a href="#home" class="text-2xl font-bold accent-color">RRH</a>
+            
+            <!-- Navigation and Theme Toggle on the right -->
+            <div class="flex items-center space-x-6">
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#home" class="hover:text-red-500 transition-colors">Home</a>
+                    <a href="#experience" class="hover:text-red-500 transition-colors">Experience</a>
+                    <a href="#projects" class="hover:text-red-500 transition-colors">Projects</a>
+                    <a href="#skills" class="hover:text-red-500 transition-colors">Skills</a>
+                    <a href="#education" class="hover:text-red-500 transition-colors">Education</a>
+                    <a href="#contact" class="hover:text-red-500 transition-colors">Contact</a>
+                </nav>
+                <button id="theme-toggle-btn" class="p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <svg class="sun-icon h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                    <svg class="moon-icon h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 pt-24 pb-12 relative z-0">
+
+        <!-- Hero Section -->
+        <section id="home" class="min-h-[calc(100vh-6rem)] flex items-center justify-center">
+            <div class="max-w-3xl text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-4 animate-on-scroll" data-interactive-text>Rayudu Rajaharsha</h1>
+                <p class="text-xl md:text-2xl mb-6 accent-color animate-on-scroll" style="transition-delay: 150ms;">AI/ML Developer & Full Stack Engineer</p>
+                <p class="mb-8 text-lg animate-on-scroll" style="transition-delay: 300ms;">
+                    A passionate and driven developer with experience in Python, AI/ML, and full-stack web development. I enjoy building innovative solutions that solve real-world problems, from automating tasks to developing intelligent applications.
+                </p>
+                <div class="flex space-x-4 justify-center animate-on-scroll" style="transition-delay: 450ms;">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rajaharsharayudu@gmail.com" target="_blank" rel="noopener noreferrer" class="bg-red-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-600 transition-colors">Contact Me</a>
+                    <a href="#projects" class="border-2 border-red-500 text-red-500 font-bold py-3 px-6 rounded-lg hover:bg-red-500 hover:text-white transition-all">View My Work</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Internship Experience -->
+        <section id="experience" class="py-20">
+            <h2 class="text-4xl font-bold mb-12 text-center animate-on-scroll" data-interactive-text>Internship Experience</h2>
+            <div class="experience-wrapper">
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Internship Cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section id="projects" class="py-20">
+            <h2 class="text-4xl font-bold mb-12 text-center animate-on-scroll" data-interactive-text>Projects</h2>
+            <div class="projects-wrapper">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Project Cards will be dynamically inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section id="skills" class="py-20">
+            <h2 class="text-4xl font-bold mb-12 text-center animate-on-scroll" data-interactive-text>Skills</h2>
+            <div id="skills-container" class="max-w-4xl mx-auto flex flex-wrap justify-center items-center gap-4">
+                <!-- Skills will be dynamically inserted here as tags -->
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section id="education" class="py-20">
+            <h2 class="text-4xl font-bold mb-12 text-center animate-on-scroll" data-interactive-text>Education</h2>
+            <div class="max-w-3xl mx-auto space-y-8">
+                <!-- Education items will be dynamically inserted here -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="py-12 bg-white/80 dark:bg-black/80">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-4 animate-on-scroll" data-interactive-text>Get In Touch</h2>
+            <p class="max-w-2xl mx-auto mb-8 animate-on-scroll" style="transition-delay: 150ms;">
+                I'm currently seeking new opportunities and would love to hear from you. Whether you have a question or just want to say hi, feel free to reach out.
+            </p>
+            <div class="flex justify-center items-center space-x-6 text-3xl mb-8 animate-on-scroll" style="transition-delay: 300ms;">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=rajaharsharayudu@gmail.com" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16"><path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.803V4.697l-5.803 3.546z"/></svg>
+                </a>
+                <a href="https://linkedin.com/in/raja-harsha-rayudu" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.327 0-1.938.721-2.268 1.226h.016V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+                </a>
+                <a href="https://github.com/Rayudurajaharsha" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                </a>
+            </div>
+            <p class="text-sm animate-on-scroll" style="transition-delay: 450ms;">&copy; 2024 Rayudu Rajaharsha. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Data from Resume ---
+        const internships = [
+            {
+                company: 'India Quantum Labs (IQL)',
+                role: 'Full Stack Quantum Al Engineer Intern',
+                date: 'Mar 2025 - Present',
+                tasks: [
+                    'Developing AI-driven full-stack applications with Quantum AI integration.',
+                    'Working on scalable front-end & back-end systems for real-world AI applications.',
+                    'Exploring Quantum Computing frameworks and their intersection with Machine Learning.'
+                ]
+            },
+            {
+                company: 'CodeAlpha',
+                role: 'Python Developer Intern',
+                date: 'Dec 2024 - Jan 2025',
+                tasks: [
+                    'Automated tasks and optimized workflows using Python, Pandas, and NumPy.',
+                    'Integrated APIs and developed scalable solutions in collaboration with cross-functional teams.'
+                ]
+            },
+            {
+                company: 'Google - AICTE',
+                role: 'AI-ML Developer Intern',
+                date: 'Apr 2024 - Jun 2024',
+                tasks: [
+                    'Developed a sentiment analysis application using a machine learning model.',
+                    'Achieved an F1-score of 87% in classifying sentiment.',
+                    'Collaborated with cross-functional teams to develop AI models, improving accuracy by 15%.'
+                ]
+            },
+            {
+                company: 'Zscalar - AICTE',
+                role: 'Zero Trust Cloud Security Intern',
+                date: 'Jan 2024 - Mar 2024',
+                tasks: [
+                    'Gained hands-on experience in real-world cybersecurity projects.',
+                    'Identified and mitigated 20+ vulnerabilities.',
+                    'Developed expertise in network security, incident response, and risk assessment.'
+                ]
+            },
+            {
+                company: 'Bharat Intern',
+                role: 'Web development Intern',
+                date: 'Sep 2023 - Oct 2023',
+                tasks: [
+                    'Built a personal portfolio website and a temperature converter web page.',
+                    'Demonstrated web development skills in HTML, CSS, and JavaScript.',
+                    'Optimized website loading time by 50%, improving overall site performance.'
+                ]
+            }
+        ];
+
+        // --- EDIT HERE ---
+        // Add the direct links to your GitHub repositories below.
+        const projects = [
+            {
+                name: 'Quantum-Safe PDF Encryption',
+                stack: 'Python | Cryptography | Numpy',
+                description: 'An advanced encryption system implementing a 512-bit enhanced AES-like algorithm (AAES) for maximum data security. Encrypts and decrypts PDF files with high precision.',
+                link: 'https://github.com/Rayudurajaharsha?tab=repositories' // Replace with your project URL
+            },
+            {
+                name: 'KYP (Know Your Phone)',
+                stack: 'Html | CSS | Java | React JS | Spring Boot | MySql',
+                description: 'A web application providing detailed information about mobile devices. Built a scalable back-end with Spring Boot, retrieving real-time data from an external API for over 10,000 devices. Integrated advanced search functionality, reducing search time by 40%.',
+                link: 'https://github.com/Rayudurajaharsha?tab=repositories' // Replace with your project URL
+            },
+            {
+                name: 'Recruit Sence (ATS)',
+                stack: 'Python | NLP | Machine Learning',
+                description: 'An Applicant Tracking System that deployed an ML model with 85% accuracy, reducing recruiter screening time by 60%. Boosted job seeker visibility by 40% and facilitated over 500 successful matches.',
+                link: 'https://github.com/Rayudurajaharsha?tab=repositories' // Replace with your project URL
+            },
+            {
+                name: 'ImgGen',
+                stack: 'Generative AI | Google LLM | GANs',
+                description: 'A Generative AI project which works using Google\'s LLM. Implemented an image generation project capable of creating novel images from various datasets using techniques like Generative Adversarial Networks (GANs).',
+                link: 'https://github.com/Rayudurajaharsha?tab=repositories' // Replace with your project URL
+            },
+            {
+                name: 'Face Detection',
+                stack: 'Python | OpenCV | NumPy',
+                description: 'Produced a face detection system with machine learning, achieving over 80% accuracy. Leveraged CNNs to achieve high accuracy under various conditions and enabled real-time face detection.',
+                link: 'https://github.com/Rayudurajaharsha?tab=repositories' // Replace with your project URL
+            },
+            {
+                name: 'IOT project, Motion detection',
+                stack: 'Arduino | PIR Sensor',
+                description: 'A DIY motion detector with Arduino that uses a PIR sensor to detect movement and trigger alerts or actions like turning on lights. Suitable for security, energy-saving, and elder care applications.',
+                link: 'https://github.com/Rayudurajaharsha?tab=repositories' // Replace with your project URL
+            }
+        ];
+
+        const education = [
+            {
+                degree: 'Master in Computer Science',
+                institution: 'University at Albany (SUNY)',
+                date: 'Aug 2025 - Present'
+            },
+            {
+                degree: 'BTech/CSE (AI/ML)',
+                institution: 'St. Peter\'s Engineering College',
+                date: 'Nov 2021 - Jun 2025',
+                details: 'CGPA: 8.74'
+            },
+            {
+                degree: 'Intermediate (MPC)',
+                institution: 'Narayana Junior College',
+                date: 'Apr 2019 - Apr 2021',
+                details: 'Percentage: 94%'
+            }
+        ];
+
+        const skills = [
+            'Python',
+            'Java',
+            'Full Stack Development',
+            'Artificial Intelligence',
+            'Machine Learning',
+            'Cybersecurity',
+            'React.js',
+            'SpringBoot',
+            'HTML & CSS',
+            'JavaScript',
+            'MySQL',
+            'Google Cloud Platform',
+            'Git'
+        ];
+
+        // --- DOM Population ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const internshipContainer = document.querySelector('#experience .grid');
+            internships.forEach((internship, index) => {
+                const card = document.createElement('div');
+                card.className = 'card p-6 rounded-lg shadow-lg animate-on-scroll';
+                // Initially hide items after the 3rd one
+                if (index >= 3) {
+                    card.classList.add('hidden');
+                }
+                card.style.transitionDelay = `${(index % 3) * 100}ms`;
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold mb-1">${internship.role}</h3>
+                    <p class="font-semibold mb-2 accent-color">${internship.company}</p>
+                    <p class="text-sm opacity-75 mb-4">${internship.date}</p>
+                    <ul class="list-disc list-inside space-y-2 text-sm">
+                        ${internship.tasks.map(task => `<li>${task}</li>`).join('')}
+                    </ul>
+                `;
+                internshipContainer.appendChild(card);
+            });
+
+            const projectContainer = document.querySelector('#projects .grid');
+            projects.forEach((project, index) => {
+                const card = document.createElement('div');
+                card.className = 'card p-6 rounded-lg shadow-lg flex flex-col animate-on-scroll';
+                 // Initially hide items after the 4th one
+                if (index >= 4) {
+                    card.classList.add('hidden');
+                }
+                card.style.transitionDelay = `${(index % 4) * 100}ms`;
+                card.innerHTML = `
+                    <div class="flex-grow">
+                        <h3 class="text-2xl font-bold mb-2">${project.name}</h3>
+                        <p class="font-semibold mb-4 accent-color text-sm">${project.stack}</p>
+                        <p>${project.description}</p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="inline-block bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600 transition-colors">
+                            View Project
+                        </a>
+                    </div>
+                `;
+                projectContainer.appendChild(card);
+            });
+
+            // "View More" button logic for Experience
+            const experienceWrapper = document.querySelector('.experience-wrapper');
+            const experienceCards = experienceWrapper.querySelectorAll('.card');
+            if (experienceCards.length > 3) {
+                const viewMoreBtn = document.createElement('button');
+                viewMoreBtn.textContent = 'View More';
+                viewMoreBtn.className = 'mt-8 mx-auto block border-2 border-red-500 text-red-500 font-bold py-2 px-6 rounded-lg hover:bg-red-500 hover:text-white transition-all';
+                experienceWrapper.appendChild(viewMoreBtn);
+
+                viewMoreBtn.addEventListener('click', () => {
+                    const isShowingMore = viewMoreBtn.textContent === 'View Less';
+                    for(let i = 3; i < experienceCards.length; i++) {
+                        experienceCards[i].classList.toggle('hidden');
+                    }
+                    viewMoreBtn.textContent = isShowingMore ? 'View More' : 'View Less';
+                });
+            }
+            
+            // "View More" button logic for Projects
+            const projectsWrapper = document.querySelector('.projects-wrapper');
+            const projectCards = projectsWrapper.querySelectorAll('.card');
+            if (projectCards.length > 4) {
+                const viewMoreBtn = document.createElement('button');
+                viewMoreBtn.textContent = 'View More';
+                viewMoreBtn.className = 'mt-8 mx-auto block border-2 border-red-500 text-red-500 font-bold py-2 px-6 rounded-lg hover:bg-red-500 hover:text-white transition-all';
+                projectsWrapper.appendChild(viewMoreBtn);
+
+                viewMoreBtn.addEventListener('click', () => {
+                    const isShowingMore = viewMoreBtn.textContent === 'View Less';
+                    for(let i = 4; i < projectCards.length; i++) {
+                        projectCards[i].classList.toggle('hidden');
+                    }
+                    viewMoreBtn.textContent = isShowingMore ? 'View More' : 'View Less';
+                });
+            }
+
+
+            const educationContainer = document.querySelector('#education .space-y-8');
+            education.forEach((edu, index) => {
+                const item = document.createElement('div');
+                item.className = 'card p-6 rounded-lg shadow-lg animate-on-scroll';
+                item.style.transitionDelay = `${index * 100}ms`;
+                item.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-xl font-bold">${edu.degree}</h3>
+                            <p class="font-semibold accent-color">${edu.institution}</p>
+                            ${edu.details ? `<p class="text-sm mt-1">${edu.details}</p>` : ''}
+                        </div>
+                        <p class="text-sm opacity-75 text-right">${edu.date}</p>
+                    </div>
+                `;
+                educationContainer.appendChild(item);
+            });
+
+            const skillsContainer = document.getElementById('skills-container');
+            skills.forEach((skill, index) => {
+                const skillTag = document.createElement('span');
+                skillTag.className = 'card py-2 px-4 rounded-lg text-lg font-medium animate-on-scroll';
+                skillTag.style.transitionDelay = `${index * 50}ms`;
+                skillTag.textContent = skill;
+                skillsContainer.appendChild(skillTag);
+            });
+
+            // --- Scroll Animation Logic ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    } else {
+                        entry.target.classList.remove('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const elementsToAnimate = document.querySelectorAll('.animate-on-scroll');
+            elementsToAnimate.forEach(el => {
+                observer.observe(el);
+            });
+        
+            // --- Theme Toggle ---
+            const themeToggleBtn = document.getElementById('theme-toggle-btn');
+            const currentTheme = localStorage.getItem('theme');
+
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    document.body.classList.remove('light-mode');
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                    document.body.classList.add('light-mode');
+                }
+                localStorage.setItem('theme', theme);
+                // Redraw canvas with new colors
+                if (window.dots && window.ctx) {
+                    window.drawDots();
+                }
+            }
+
+            if (currentTheme) {
+                setTheme(currentTheme);
+            } else {
+                // Default to light mode
+                setTheme('light');
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                setTheme(isDarkMode ? 'light' : 'dark');
+            });
+
+            // --- Custom Cursor Logic ---
+            const cursor = document.querySelector('.custom-cursor');
+            window.addEventListener('mousemove', e => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            // --- Card Tilt Animation ---
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const { width, height } = rect;
+                    const rotateX = (y / height - 0.5) * -15; // Tilt up/down
+                    const rotateY = (x / width - 0.5) * 15; // Tilt left/right
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            });
+
+            // --- Interactive Text Logic ---
+            function wrapLetters(element) {
+                const text = element.textContent.trim();
+                const letters = text.split('');
+                const html = letters.map(letter => {
+                    if (letter === ' ') {
+                        return ' ';
+                    }
+                    return `<span class="interactive-letter">${letter}</span>`;
+                }).join('');
+                element.innerHTML = html;
+            }
+
+            document.querySelectorAll('[data-interactive-text]').forEach(wrapLetters);
+        });
+
+
+        // --- Animated Background ---
+        const canvas = document.getElementById('animated-bg');
+        const ctx = canvas.getContext('2d');
+        window.ctx = ctx; // Make context globally available for redraw
+
+        let dots = [];
+        const numDots = 150;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            createDots();
+        }
+
+        function createDots() {
+            dots = [];
+            for (let i = 0; i < numDots; i++) {
+                dots.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 1.5 + 0.5
+                });
+            }
+            window.dots = dots; // Make dots globally available
+        }
+
+        function drawDots() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const bgColor = isDarkMode ? 'rgba(26, 26, 26, 1)' : 'rgba(240, 240, 240, 1)';
+            const dotColor = isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(26, 26, 26, 0.8)';
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = bgColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = dotColor;
+            dots.forEach(dot => {
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+        window.drawDots = drawDots; // Make draw function global
+
+        function updateDots() {
+            dots.forEach(dot => {
+                dot.x += dot.vx;
+                dot.y += dot.vy;
+
+                if (dot.x < 0 || dot.x > canvas.width) dot.vx *= -1;
+                if (dot.y < 0 || dot.y > canvas.height) dot.vy *= -1;
+            });
+        }
+
+        function animate() {
+            drawDots();
+            updateDots();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Initial setup
+        resizeCanvas();
+        animate();
+    </script>
+</body>
+</html>
